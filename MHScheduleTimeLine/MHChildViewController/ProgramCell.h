@@ -10,4 +10,6 @@
 
 @interface ProgramCell : UICollectionViewCell
 
+@property (weak, nonatomic) IBOutlet UILabel *title;
+
 @end

@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MHChildViewController : UIViewController
+@interface MHChildViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
+
+@property(strong, nonatomic) NSMutableArray *dataSource;
+@property(strong, nonatomic) NSIndexPath *activeIndex;
+
+- (id)initWithArray:(NSArray *)array;
+- (void)moveToCurrentTime;
 
 @end

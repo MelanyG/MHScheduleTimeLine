@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  MHParentController.h
 //  MHScheduleTimeLine
 //
 //  Created by Melaniia Hulianovych on 11/16/16.
@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+extern CGFloat const kPixelsPerMinute;
+
+@interface MHParentController : UIViewController
 
 
 @end

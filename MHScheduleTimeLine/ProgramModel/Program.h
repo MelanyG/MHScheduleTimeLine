@@ -10,4 +10,8 @@
 
 @interface Program : NSObject
 
+@property(strong, nonatomic) NSString *title;
+@property(strong, nonatomic) NSDate *startTime;
+@property(strong, nonatomic) NSDate *endTime;
+
 @end

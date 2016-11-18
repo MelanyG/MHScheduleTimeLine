@@ -7,8 +7,21 @@
 //
 
 #import "MHChildViewController.h"
+#import "ProgramCell.h"
+#import "HalfHourCell.h"
+#import "Program.h"
+#import "CustomTimeLayOut.h"
+#import "MHParentController.h"
 
-@interface MHChildViewController ()
+
+@interface MHChildViewController (){
+    NSCalendar *_gregorianCalendar;
+}
+
+@property (weak, nonatomic) IBOutlet UICollectionView *timeLineCollection;
+@property (weak, nonatomic) IBOutlet CustomTimeLayOut *customLayOut;
+@property (strong, nonatomic) NSArray *timeLablesArray;
+@property (strong, nonatomic) NSTimer *autoScrollingTimer;
 
 @end
 
@@ -16,6 +29,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor orangeColor];
+    self.timeLineCollection.backgroundColor = [UIColor purpleColor];
+    self.timeLineCollection.delegate = self;
+    [self moveToCurrentTime];
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -24,14 +41,147 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (id)initWithArray:(NSArray *)array {
+    self = [super init];
+    if (self != nil) {
+        self.dataSource = (NSMutableArray *)array;
+        self.view = [[[NSBundle mainBundle] loadNibNamed:@"MHChildViewController" owner:self options:nil] objectAtIndex:0];
+        self.timeLablesArray = [self createTimeArray:array];
+        [self.timeLineCollection registerNib:[UINib nibWithNibName:@"ProgramCell" bundle:nil] forCellWithReuseIdentifier:@"ProgramCell"];
+        [self.timeLineCollection registerNib:[UINib nibWithNibName:@"HalfHourCell" bundle:nil] forCellWithReuseIdentifier:@"HalfHourCell"];
+        [self.customLayOut setUpWithHalfHourItems:self.dataSource.count andProgramItems:self.dataSource.count andArrayOfSchedules:array];
+        [self startAutoScrollingTimer];
+    }
+    return self;
 }
-*/
+
+#pragma mark - UICollectionViewDataSource
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 2;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return self.dataSource.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString * const CellIdentifier = @"ProgramCell";
+    static NSString * const HalfHourCellIdentifier = @"HalfHourCell";
+    UICollectionViewCell *cell;
+
+    if(indexPath.section == 1) {
+        HalfHourCell *hourCell = [collectionView dequeueReusableCellWithReuseIdentifier:HalfHourCellIdentifier forIndexPath:indexPath];
+        hourCell.timeLable.text = self.timeLablesArray[indexPath.item];
+        cell = hourCell;
+
+    } else {
+        Program *program = self.dataSource[indexPath.item];
+
+        ProgramCell *programCell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+        programCell.title.text = program.title;
+        if(self.activeIndex.item == indexPath.item) {
+            programCell.backgroundColor = [UIColor yellowColor];
+        } else {
+        programCell.backgroundColor = [UIColor lightGrayColor];
+        }
+        cell = programCell;
+    }
+      
+    return cell;
+}
+
+-(NSArray *)createTimeArray:(NSArray *)mainArray {
+    NSMutableArray *tmpArray = [NSMutableArray new];
+    if (_gregorianCalendar == nil)
+    {
+        _gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    }
+    NSDateComponents *comps = [_gregorianCalendar components:(NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute) fromDate:((Program *)mainArray[0]).startTime];
+    NSInteger days = [comps day];
+    NSInteger month = [comps month];
+    NSInteger year = [comps year];
+    NSInteger hour = [comps hour];   // I add 48 hours to prevent the value from ever being negative with scrolling into the past.  The display gets slightly messed up if the times become negative.
+    NSInteger minutes = [comps minute];
+    if(minutes > 30) {
+        [comps setMinute:30];
+    } else {
+     comps.minute = 0;
+    }
+    
+    NSDateComponents *comp = [[NSDateComponents alloc] init];
+    [comp setYear:year];
+    [comp setMonth:month];
+    [comp setDay:days];
+    [comp setHour:hour];
+    [comp setMinute:minutes];
+ 
+    NSDate *date = [[NSCalendar currentCalendar] dateFromComponents:comps];
+    self.customLayOut.startPoint = date;
+
+    for(int i = 0; i < mainArray.count; i++) {
+        NSInteger currHour = (hour) * 60 + minutes;
+        NSInteger newHour = ((hour * 60 + minutes) / 60);
+        NSInteger tmpHour = newHour;
+        newHour = newHour > 12 ? newHour % 12 : newHour;
+        NSString *hourString = [NSString stringWithFormat:(currHour%60 < 30) ? @"%ld:00%c":@"%ld:30%c", (long)newHour, (tmpHour %24 < 12)?'A':'P'];
+        minutes +=30;
+        [tmpArray addObject:hourString];
+    }
+    
+    return tmpArray;
+}
+
+#pragma mark - Helping methods
+
+- (void)moveToCurrentTime {
+
+    NSDate *currentDate = [NSDate new];
+    NSInteger difference = [currentDate timeIntervalSinceDate:self.customLayOut.startPoint] / 60 * kPixelsPerMinute - [UIScreen mainScreen].bounds.size.width / 2;
+    
+    CGPoint destinationPoint = CGPointMake(difference, 0.f);
+    [self.timeLineCollection setContentOffset:destinationPoint animated:YES];
+    [self addActiveLine:destinationPoint];
+    self.activeIndex = [self.timeLineCollection indexPathForItemAtPoint:destinationPoint];
+    [self.timeLineCollection reloadData];
+}
+
+#pragma mark - Timer Settings
+
+- (void)startAutoScrollingTimer {
+    if (!_autoScrollingTimer) {
+        _autoScrollingTimer = [NSTimer scheduledTimerWithTimeInterval:5.
+                                                               target:self
+                                                             selector:@selector(moveToCurrentTime)
+                                                             userInfo:nil
+                                                              repeats:YES];
+    }
+}
+
+- (void)stopAutoScrollingTimer {
+    [_autoScrollingTimer invalidate];
+    _autoScrollingTimer = nil;
+}
+
+- (void)addActiveLine:(CGPoint)point {
+    for (CALayer *layer in self.timeLineCollection.layer.sublayers) {
+        if([layer.name isEqualToString:@"ActiveLine"]) {
+            [layer removeFromSuperlayer];
+            break;
+        }
+    }
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    point.x += [UIScreen mainScreen].bounds.size.width / 2;
+    [path moveToPoint:point];
+    [path addLineToPoint:CGPointMake(point.x, 25)];
+    
+    CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+    shapeLayer.path = [path CGPath];
+    shapeLayer.strokeColor = [[UIColor whiteColor] CGColor];
+    shapeLayer.lineWidth = 2.0;
+    shapeLayer.fillColor = [[UIColor clearColor] CGColor];
+    shapeLayer.name = @"ActiveLine";
+    [self.timeLineCollection.layer addSublayer:shapeLayer];
+}
 
 @end

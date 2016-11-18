@@ -10,4 +10,6 @@
 
 @interface HalfHourCell : UICollectionViewCell
 
+@property (weak, nonatomic) IBOutlet UILabel *timeLable;
+
 @end

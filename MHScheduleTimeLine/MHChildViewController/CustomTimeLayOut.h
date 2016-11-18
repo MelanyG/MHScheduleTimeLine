@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+
 @interface CustomTimeLayOut : UICollectionViewFlowLayout
+
+@property (nonatomic, strong) NSDictionary *layoutInfo;
+@property (nonatomic) NSDate *startPoint;
+
+
+-(void)setUpWithHalfHourItems:(NSInteger)hItems andProgramItems:(NSInteger)pItems andArrayOfSchedules:(NSArray *)schedule;
 
 @end
