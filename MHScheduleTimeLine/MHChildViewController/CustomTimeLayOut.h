@@ -13,7 +13,7 @@
 
 @property (nonatomic, strong) NSDictionary *layoutInfo;
 @property (nonatomic) NSDate *startPoint;
-
+@property (nonatomic) NSDate *endPoint;
 
 -(void)setUpWithHalfHourItems:(NSInteger)hItems andProgramItems:(NSInteger)pItems andArrayOfSchedules:(NSArray *)schedule;
 

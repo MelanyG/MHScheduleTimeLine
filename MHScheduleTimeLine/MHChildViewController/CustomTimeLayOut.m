@@ -44,8 +44,8 @@ static NSString * const kHalfHourCollectionViewLayoutCellKind = @"HalfHourCell";
 
 - (void)prepareLayout {
     [super prepareLayout];
-    self.cellCountHalfHours = (int)[self.collectionView numberOfItemsInSection:0];
-    self.cellCountPrograms = (int)[self.collectionView numberOfItemsInSection:1];
+    self.cellCountHalfHours = (int)[self.collectionView numberOfItemsInSection:1];
+    self.cellCountPrograms = (int)[self.collectionView numberOfItemsInSection:0];
     
     NSMutableDictionary *newLayoutInfo = [NSMutableDictionary dictionary];
     NSMutableDictionary *cellHalfHourLayoutInfo = [NSMutableDictionary dictionary];

@@ -49,7 +49,7 @@
         self.timeLablesArray = [self createTimeArray:array];
         [self.timeLineCollection registerNib:[UINib nibWithNibName:@"ProgramCell" bundle:nil] forCellWithReuseIdentifier:@"ProgramCell"];
         [self.timeLineCollection registerNib:[UINib nibWithNibName:@"HalfHourCell" bundle:nil] forCellWithReuseIdentifier:@"HalfHourCell"];
-        [self.customLayOut setUpWithHalfHourItems:self.dataSource.count andProgramItems:self.dataSource.count andArrayOfSchedules:array];
+        [self.customLayOut setUpWithHalfHourItems:self.timeLablesArray.count andProgramItems:self.dataSource.count andArrayOfSchedules:array];
         [self startAutoScrollingTimer];
     }
     return self;
@@ -62,7 +62,11 @@
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.dataSource.count;
+    if(section == 0) {
+        return self.dataSource.count;
+    } else {
+        return self.timeLablesArray.count;
+    }
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -98,9 +102,8 @@
         _gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     }
     NSDateComponents *comps = [_gregorianCalendar components:(NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute) fromDate:((Program *)mainArray[0]).startTime];
-    NSInteger days = [comps day];
-    NSInteger month = [comps month];
-    NSInteger year = [comps year];
+    NSDateComponents *endComps = [_gregorianCalendar components:(NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute) fromDate:((Program *)mainArray.lastObject).endTime];
+
     NSInteger hour = [comps hour];   // I add 48 hours to prevent the value from ever being negative with scrolling into the past.  The display gets slightly messed up if the times become negative.
     NSInteger minutes = [comps minute];
     if(minutes > 30) {
@@ -108,18 +111,21 @@
     } else {
      comps.minute = 0;
     }
+
+    NSInteger endMinutes = [endComps minute];
+    if(endMinutes > 30) {
+        [endComps setMinute:30];
+    } else {
+        endComps.minute = 0;
+    }
     
-    NSDateComponents *comp = [[NSDateComponents alloc] init];
-    [comp setYear:year];
-    [comp setMonth:month];
-    [comp setDay:days];
-    [comp setHour:hour];
-    [comp setMinute:minutes];
- 
+    NSDate *endDate = [[NSCalendar currentCalendar] dateFromComponents:endComps];
+    self.customLayOut.endPoint = endDate;
+
     NSDate *date = [[NSCalendar currentCalendar] dateFromComponents:comps];
     self.customLayOut.startPoint = date;
-
-    for(int i = 0; i < mainArray.count; i++) {
+    NSInteger iterationTimes = [endDate timeIntervalSinceDate:date]/60/30;
+    for(int i = 0; i < iterationTimes; i++) {
         NSInteger currHour = (hour) * 60 + minutes;
         NSInteger newHour = ((hour * 60 + minutes) / 60);
         NSInteger tmpHour = newHour;
