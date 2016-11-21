@@ -12,8 +12,10 @@
 
 @property(strong, nonatomic) NSMutableArray *dataSource;
 @property(strong, nonatomic) NSIndexPath *activeIndex;
+@property(strong, nonatomic) NSIndexPath *currentProgrameIndex;
+@property (weak, nonatomic) IBOutlet UICollectionView *timeLineCollection;
 
 - (id)initWithArray:(NSArray *)array;
 - (void)moveToCurrentTime;
-
+- (void)resetController:(NSMutableArray *)newData;
 @end

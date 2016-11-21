@@ -18,7 +18,7 @@
     NSCalendar *_gregorianCalendar;
 }
 
-@property (weak, nonatomic) IBOutlet UICollectionView *timeLineCollection;
+
 @property (weak, nonatomic) IBOutlet CustomTimeLayOut *customLayOut;
 @property (strong, nonatomic) NSArray *timeLablesArray;
 @property (strong, nonatomic) NSTimer *autoScrollingTimer;
@@ -29,10 +29,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor orangeColor];
-    self.timeLineCollection.backgroundColor = [UIColor purpleColor];
-    self.timeLineCollection.delegate = self;
-    [self moveToCurrentTime];
+//    self.view.backgroundColor = [UIColor orangeColor];
+//    self.timeLineCollection.backgroundColor = [UIColor purpleColor];
+//    self.timeLineCollection.delegate = self;
+//    [self moveToCurrentTime];
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -50,9 +50,31 @@
         [self.timeLineCollection registerNib:[UINib nibWithNibName:@"ProgramCell" bundle:nil] forCellWithReuseIdentifier:@"ProgramCell"];
         [self.timeLineCollection registerNib:[UINib nibWithNibName:@"HalfHourCell" bundle:nil] forCellWithReuseIdentifier:@"HalfHourCell"];
         [self.customLayOut setUpWithHalfHourItems:self.timeLablesArray.count andProgramItems:self.dataSource.count andArrayOfSchedules:array];
-        [self startAutoScrollingTimer];
+
     }
     return self;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self moveToCurrentTime];
+    [self startAutoScrollingTimer];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    [self stopAutoScrollingTimer];
+}
+
+#pragma mark - Reset of Controller
+
+- (void)resetController:(NSMutableArray *)newData {
+    self.dataSource = newData;
+    [self.customLayOut setUpWithHalfHourItems:self.timeLablesArray.count andProgramItems:self.dataSource.count andArrayOfSchedules:newData];
+    [self.customLayOut invalidateLayout];
+    [self moveToCurrentTime];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -85,7 +107,7 @@
         ProgramCell *programCell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
         programCell.title.text = program.title;
         if(self.activeIndex.item == indexPath.item) {
-            programCell.backgroundColor = [UIColor yellowColor];
+            programCell.backgroundColor = [UIColor purpleColor];
         } else {
         programCell.backgroundColor = [UIColor lightGrayColor];
         }
@@ -94,6 +116,8 @@
       
     return cell;
 }
+
+#pragma mark - Helping methods
 
 -(NSArray *)createTimeArray:(NSArray *)mainArray {
     NSMutableArray *tmpArray = [NSMutableArray new];
@@ -138,8 +162,6 @@
     return tmpArray;
 }
 
-#pragma mark - Helping methods
-
 - (void)moveToCurrentTime {
 
     NSDate *currentDate = [NSDate new];
@@ -147,9 +169,8 @@
     
     CGPoint destinationPoint = CGPointMake(difference, 0.f);
     [self.timeLineCollection setContentOffset:destinationPoint animated:YES];
+    [self definingActiveView:destinationPoint];
     [self addActiveLine:destinationPoint];
-    self.activeIndex = [self.timeLineCollection indexPathForItemAtPoint:destinationPoint];
-    [self.timeLineCollection reloadData];
 }
 
 #pragma mark - Timer Settings
@@ -168,6 +189,8 @@
     [_autoScrollingTimer invalidate];
     _autoScrollingTimer = nil;
 }
+
+#pragma mark - Drawinf of Spliiter
 
 - (void)addActiveLine:(CGPoint)point {
     for (CALayer *layer in self.timeLineCollection.layer.sublayers) {
@@ -188,6 +211,24 @@
     shapeLayer.fillColor = [[UIColor clearColor] CGColor];
     shapeLayer.name = @"ActiveLine";
     [self.timeLineCollection.layer addSublayer:shapeLayer];
+}
+
+- (void)definingActiveView:(CGPoint)activeXPosition {
+    activeXPosition.y = 25.f;
+    activeXPosition.x += [UIScreen mainScreen].bounds.size.width / 2;
+    self.activeIndex = [self.timeLineCollection indexPathForItemAtPoint:activeXPosition];
+    NSIndexPath *newIndexPath = [NSIndexPath indexPathForItem:self.activeIndex.item inSection:0];
+    self.activeIndex = newIndexPath;
+}
+
+#pragma mark - ScrollViewDelegate methods
+
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
+    [self stopAutoScrollingTimer];
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    [self startAutoScrollingTimer];
 }
 
 @end

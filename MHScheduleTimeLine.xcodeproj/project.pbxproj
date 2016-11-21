@@ -22,6 +22,7 @@
 		391864EF1DDDDA0A005F1CFF /* HalfHourCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 391864ED1DDDDA09005F1CFF /* HalfHourCell.xib */; };
 		391864F51DDDE555005F1CFF /* CustomTimeLayOut.m in Sources */ = {isa = PBXBuildFile; fileRef = 391864F41DDDE555005F1CFF /* CustomTimeLayOut.m */; };
 		391864F81DDE1091005F1CFF /* PositionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 391864F71DDE1091005F1CFF /* PositionModel.m */; };
+		39F333561DE3364D0027EF77 /* ExperimentVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 39F333551DE3364D0027EF77 /* ExperimentVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,8 @@
 		391864F41DDDE555005F1CFF /* CustomTimeLayOut.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTimeLayOut.m; sourceTree = "<group>"; };
 		391864F61DDE1091005F1CFF /* PositionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PositionModel.h; sourceTree = "<group>"; };
 		391864F71DDE1091005F1CFF /* PositionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PositionModel.m; sourceTree = "<group>"; };
+		39F333541DE3364D0027EF77 /* ExperimentVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExperimentVC.h; sourceTree = "<group>"; };
+		39F333551DE3364D0027EF77 /* ExperimentVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExperimentVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +92,8 @@
 				391864C31DDC9F7F005F1CFF /* MHParentController.h */,
 				391864C41DDC9F7F005F1CFF /* MHParentController.m */,
 				391864C61DDC9F7F005F1CFF /* Main.storyboard */,
+				39F333541DE3364D0027EF77 /* ExperimentVC.h */,
+				39F333551DE3364D0027EF77 /* ExperimentVC.m */,
 				391864C91DDC9F7F005F1CFF /* Assets.xcassets */,
 				391864CB1DDC9F7F005F1CFF /* LaunchScreen.storyboard */,
 				391864CE1DDC9F80005F1CFF /* Info.plist */,
@@ -208,6 +213,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				391864E51DDCAC2B005F1CFF /* Program.m in Sources */,
+				39F333561DE3364D0027EF77 /* ExperimentVC.m in Sources */,
 				391864EE1DDDDA09005F1CFF /* HalfHourCell.m in Sources */,
 				391864F81DDE1091005F1CFF /* PositionModel.m in Sources */,
 				391864DD1DDCA67F005F1CFF /* MHChildViewController.m in Sources */,
@@ -366,6 +372,7 @@
 				391864D31DDC9F80005F1CFF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -15,6 +15,7 @@
 @property (nonatomic) NSDate *startPoint;
 @property (nonatomic) NSDate *endPoint;
 
--(void)setUpWithHalfHourItems:(NSInteger)hItems andProgramItems:(NSInteger)pItems andArrayOfSchedules:(NSArray *)schedule;
+- (void)setUpWithHalfHourItems:(NSInteger)hItems andProgramItems:(NSInteger)pItems andArrayOfSchedules:(NSArray *)schedule;
+- (CGRect)frameForItemAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
