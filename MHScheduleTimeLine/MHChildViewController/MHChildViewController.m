@@ -16,6 +16,7 @@
 
 @interface MHChildViewController (){
     NSCalendar *_gregorianCalendar;
+
 }
 
 
@@ -51,6 +52,7 @@
         [self.timeLineCollection registerNib:[UINib nibWithNibName:@"HalfHourCell" bundle:nil] forCellWithReuseIdentifier:@"HalfHourCell"];
         [self.customLayOut setUpWithHalfHourItems:self.timeLablesArray.count andProgramItems:self.dataSource.count andArrayOfSchedules:array];
 
+        self.timeLineCollection.backgroundColor = [UIColor grayColor];
     }
     return self;
 }
@@ -60,6 +62,7 @@
     
     [self moveToCurrentTime];
     [self startAutoScrollingTimer];
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -99,6 +102,8 @@
     if(indexPath.section == 1) {
         HalfHourCell *hourCell = [collectionView dequeueReusableCellWithReuseIdentifier:HalfHourCellIdentifier forIndexPath:indexPath];
         hourCell.timeLable.text = self.timeLablesArray[indexPath.item];
+        [hourCell.timeLable setTextColor:[MHConfig sharedConfiguration].timelineBarTextColor];
+        hourCell.backgroundColor = [MHConfig sharedConfiguration].timelineBarBackgroundColor;
         cell = hourCell;
 
     } else {
@@ -107,9 +112,13 @@
         ProgramCell *programCell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
         programCell.title.text = program.title;
         if(self.activeIndex.item == indexPath.item) {
-            programCell.backgroundColor = [UIColor purpleColor];
+            [programCell.title setFont:[MHConfig sharedConfiguration].activeProgramFont];
+            [programCell.title setTextColor:[MHConfig sharedConfiguration].activeProgramTextColor];
+            programCell.backgroundColor = [UIColor lightGrayColor];
         } else {
-        programCell.backgroundColor = [UIColor lightGrayColor];
+            [programCell.title setFont:[MHConfig sharedConfiguration].inactiveProgramFont];
+            [programCell.title setTextColor:[MHConfig sharedConfiguration].inactiveProgramTextColor];
+            programCell.backgroundColor = [UIColor grayColor];
         }
         cell = programCell;
     }
@@ -121,8 +130,7 @@
 
 -(NSArray *)createTimeArray:(NSArray *)mainArray {
     NSMutableArray *tmpArray = [NSMutableArray new];
-    if (_gregorianCalendar == nil)
-    {
+    if (_gregorianCalendar == nil) {
         _gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     }
     NSDateComponents *comps = [_gregorianCalendar components:(NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute) fromDate:((Program *)mainArray[0]).startTime];

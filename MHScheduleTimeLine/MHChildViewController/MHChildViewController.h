@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MHConfig.h"
+
 
 @interface MHChildViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
 

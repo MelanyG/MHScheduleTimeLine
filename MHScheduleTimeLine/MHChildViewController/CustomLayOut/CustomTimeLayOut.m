@@ -84,6 +84,25 @@ static NSString * const kHalfHourCollectionViewLayoutCellKind = @"HalfHourCell";
     if(indexPath.section == 1) {
         return self.layoutInfo[kHalfHourCollectionViewLayoutCellKind][newIndex];
     }
+//    CGFloat currentIndex = self.collectionView.contentOffset.x / self.programItemSize.width;
+//    
+//    UICollectionViewLayoutAttributes *theAttributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
+//    theAttributes.center = CGPointMake(self.collectionView.center.x , self.programItemSize.width * 0.5);
+//    
+//    CGAffineTransform translationT;
+//    
+//    
+//    CGFloat endTranslateOffset = 0;
+//    
+//    CGFloat endFactor1 = (self.collectionView.bounds.size.height - self.programItemSize.width) / self.programItemSize.width * 0.1;
+//    if(currentIndex + 1 > (self.cellCountPrograms - endFactor1)){
+//        CGFloat valA = (currentIndex + 1 - (self.cellCountPrograms  - endFactor1));
+//        CGFloat valB = valA / endFactor1;
+//        endTranslateOffset = (self.collectionView.bounds.size.height - self.programItemSize.width) * valB;
+//    }
+//    
+//    theAttributes.transform = translationT;
+//    theAttributes.zIndex = 1;
     return self.layoutInfo[kProgramCollectionViewLayoutCellKind][newIndex];
 }
 
@@ -139,5 +158,16 @@ static NSString * const kHalfHourCollectionViewLayoutCellKind = @"HalfHourCell";
     }
     return schedule;
 }
+
+//- (UICollectionViewLayoutAttributes *)getLastatVisibleElement:(NSMutableArray *)attributes {
+//    UICollectionViewLayoutAttributes *lastElement;
+//    for(UICollectionViewLayoutAttributes *attribute in attributes) {
+//        if(attribute.indexPath.section == 0) {
+//        
+//        }
+//    }
+//    
+//    return lastElement;
+//}
 
 @end

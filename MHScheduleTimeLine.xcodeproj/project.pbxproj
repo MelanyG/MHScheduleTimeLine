@@ -23,6 +23,7 @@
 		39F333671DE349310027EF77 /* HalfHourCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 39F333601DE349310027EF77 /* HalfHourCell.xib */; };
 		39F333681DE349310027EF77 /* ProgramCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 39F333621DE349310027EF77 /* ProgramCell.m */; };
 		39F333691DE349310027EF77 /* ProgramCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 39F333631DE349310027EF77 /* ProgramCell.xib */; };
+		39F3336C1DE46BD60027EF77 /* MHConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 39F3336B1DE46BD60027EF77 /* MHConfig.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +54,8 @@
 		39F333611DE349310027EF77 /* ProgramCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgramCell.h; sourceTree = "<group>"; };
 		39F333621DE349310027EF77 /* ProgramCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgramCell.m; sourceTree = "<group>"; };
 		39F333631DE349310027EF77 /* ProgramCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProgramCell.xib; sourceTree = "<group>"; };
+		39F3336A1DE46BD60027EF77 /* MHConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHConfig.h; sourceTree = "<group>"; };
+		39F3336B1DE46BD60027EF77 /* MHConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHConfig.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +88,8 @@
 		391864BC1DDC9F7A005F1CFF /* MHScheduleTimeLine */ = {
 			isa = PBXGroup;
 			children = (
+				39F3336A1DE46BD60027EF77 /* MHConfig.h */,
+				39F3336B1DE46BD60027EF77 /* MHConfig.m */,
 				391864E21DDCAC2B005F1CFF /* ProgramModel */,
 				391864D91DDCA67F005F1CFF /* MHChildViewController */,
 				391864C01DDC9F7F005F1CFF /* AppDelegate.h */,
@@ -244,6 +249,7 @@
 				391864C51DDC9F7F005F1CFF /* MHParentController.m in Sources */,
 				391864C21DDC9F7F005F1CFF /* AppDelegate.m in Sources */,
 				391864BF1DDC9F7A005F1CFF /* main.m in Sources */,
+				39F3336C1DE46BD60027EF77 /* MHConfig.m in Sources */,
 				39F333681DE349310027EF77 /* ProgramCell.m in Sources */,
 				39F333661DE349310027EF77 /* HalfHourCell.m in Sources */,
 			);
