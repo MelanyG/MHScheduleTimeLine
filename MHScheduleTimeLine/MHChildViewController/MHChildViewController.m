@@ -23,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet CustomTimeLayOut *customLayOut;
 @property (strong, nonatomic) NSArray *timeLablesArray;
 @property (strong, nonatomic) NSTimer *autoScrollingTimer;
+@property (nonatomic) CGPoint tickPoint;
 
 @end
 
@@ -121,6 +122,7 @@
             programCell.backgroundColor = [UIColor grayColor];
         }
         cell = programCell;
+        [self.timeLineCollection bringSubviewToFront:cell];
     }
       
     return cell;
@@ -219,6 +221,7 @@
     shapeLayer.fillColor = [[UIColor clearColor] CGColor];
     shapeLayer.name = @"ActiveLine";
     [self.timeLineCollection.layer addSublayer:shapeLayer];
+    self.tickPoint = point;
 }
 
 - (void)definingActiveView:(CGPoint)activeXPosition {
@@ -237,6 +240,20 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     [self startAutoScrollingTimer];
+}
+
+#pragma mark - CustomTimeLayOutDelegate method
+
+-(void)layoutSubviewsWithAttributes:(NSMutableArray *)theAttributes{
+    CGPoint startOfScreen = CGPointMake(self.timeLineCollection.bounds.origin.x, 25.f);
+    for(UICollectionViewLayoutAttributes *attribute in theAttributes) {
+    if(CGRectContainsPoint(attribute.frame, startOfScreen)) {
+        ProgramCell *cell = (ProgramCell*)[self.timeLineCollection cellForItemAtIndexPath:attribute.indexPath];
+        [self.timeLineCollection sendSubviewToBack:cell];
+//        NSLog(@"Intersect %@", cell.title.text);
+        attribute.frame = CGRectMake(startOfScreen.x, startOfScreen.y, attribute.frame.size.width, attribute.frame.size.height);
+        }
+    }
 }
 
 @end

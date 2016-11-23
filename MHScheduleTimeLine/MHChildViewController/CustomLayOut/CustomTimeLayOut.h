@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol CustomTimeLayOutDelegate <UICollectionViewDelegate>
+
+@required
+
+- (void)layoutSubviewsWithAttributes:(NSMutableArray*)theAttributes;
+
+@end
+
 
 @interface CustomTimeLayOut : UICollectionViewFlowLayout
 
