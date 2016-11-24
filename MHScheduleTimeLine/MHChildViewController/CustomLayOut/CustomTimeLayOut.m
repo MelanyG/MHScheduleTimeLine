@@ -65,7 +65,7 @@ static NSString * const kHalfHourCollectionViewLayoutCellKind = @"HalfHourCell";
         itemAttributes.frame = [self frameForItemAtIndexPath:indexPath];
         cellHalfHourLayoutInfo[indexPath] = itemAttributes;
     }
-    newLayoutInfo[kProgramCollectionViewLayoutCellKind] = cellHalfHourLayoutInfo;
+    newLayoutInfo[kHalfHourCollectionViewLayoutCellKind] = cellHalfHourLayoutInfo;
     for (NSInteger item = 0; item < self.cellCountPrograms; item++) {
         indexPath = [NSIndexPath indexPathForItem:item inSection:0];
         
@@ -75,7 +75,7 @@ static NSString * const kHalfHourCollectionViewLayoutCellKind = @"HalfHourCell";
         cellProgramLayoutInfo[indexPath] = itemAttributes;
     }
     
-    newLayoutInfo[kHalfHourCollectionViewLayoutCellKind] = cellProgramLayoutInfo;
+    newLayoutInfo[kProgramCollectionViewLayoutCellKind] = cellProgramLayoutInfo;
     
     self.layoutInfo = newLayoutInfo;
 }

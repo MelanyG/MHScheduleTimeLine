@@ -16,9 +16,7 @@
 
 @interface MHChildViewController (){
     NSCalendar *_gregorianCalendar;
-
 }
-
 
 @property (weak, nonatomic) IBOutlet CustomTimeLayOut *customLayOut;
 @property (strong, nonatomic) NSArray *timeLablesArray;
@@ -27,14 +25,11 @@
 
 @end
 
+
 @implementation MHChildViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.view.backgroundColor = [UIColor orangeColor];
-//    self.timeLineCollection.backgroundColor = [UIColor purpleColor];
-//    self.timeLineCollection.delegate = self;
-//    [self moveToCurrentTime];
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -109,7 +104,6 @@
 
     } else {
         Program *program = self.dataSource[indexPath.item];
-
         ProgramCell *programCell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
         programCell.title.text = program.title;
         if(self.activeIndex.item == indexPath.item) {
@@ -122,9 +116,8 @@
             programCell.backgroundColor = [UIColor grayColor];
         }
         cell = programCell;
-        [self.timeLineCollection bringSubviewToFront:cell];
+        [self.timeLineCollection sendSubviewToBack:cell];
     }
-      
     return cell;
 }
 
@@ -200,7 +193,7 @@
     _autoScrollingTimer = nil;
 }
 
-#pragma mark - Drawinf of Spliiter
+#pragma mark - Drawing Spliter
 
 - (void)addActiveLine:(CGPoint)point {
     for (CALayer *layer in self.timeLineCollection.layer.sublayers) {
@@ -229,7 +222,13 @@
     activeXPosition.x += [UIScreen mainScreen].bounds.size.width / 2;
     self.activeIndex = [self.timeLineCollection indexPathForItemAtPoint:activeXPosition];
     NSIndexPath *newIndexPath = [NSIndexPath indexPathForItem:self.activeIndex.item inSection:0];
+    NSIndexPath *nextIndexPath = [NSIndexPath indexPathForItem:(self.activeIndex.item + 1) inSection:0];
     self.activeIndex = newIndexPath;
+
+    CGRect cellNext = [self.customLayOut frameForItemAtIndexPath:nextIndexPath];
+    if(cellNext.origin.x <= activeXPosition.x) {
+        self.activeIndex = nextIndexPath;
+    }
 }
 
 #pragma mark - ScrollViewDelegate methods
@@ -245,12 +244,11 @@
 #pragma mark - CustomTimeLayOutDelegate method
 
 -(void)layoutSubviewsWithAttributes:(NSMutableArray *)theAttributes{
-    CGPoint startOfScreen = CGPointMake(self.timeLineCollection.bounds.origin.x, 25.f);
+    CGPoint startOfScreen = CGPointMake(self.timeLineCollection.bounds.origin.x-5, 25.f);
     for(UICollectionViewLayoutAttributes *attribute in theAttributes) {
     if(CGRectContainsPoint(attribute.frame, startOfScreen)) {
         ProgramCell *cell = (ProgramCell*)[self.timeLineCollection cellForItemAtIndexPath:attribute.indexPath];
         [self.timeLineCollection sendSubviewToBack:cell];
-//        NSLog(@"Intersect %@", cell.title.text);
         attribute.frame = CGRectMake(startOfScreen.x, startOfScreen.y, attribute.frame.size.width, attribute.frame.size.height);
         }
     }
