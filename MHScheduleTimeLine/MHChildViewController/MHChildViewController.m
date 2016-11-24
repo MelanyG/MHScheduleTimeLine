@@ -209,7 +209,7 @@
     
     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
     shapeLayer.path = [path CGPath];
-    shapeLayer.strokeColor = [[UIColor whiteColor] CGColor];
+    shapeLayer.strokeColor = [[MHConfig sharedConfiguration].timelineBarTextColor CGColor];
     shapeLayer.lineWidth = 2.0;
     shapeLayer.fillColor = [[UIColor clearColor] CGColor];
     shapeLayer.name = @"ActiveLine";

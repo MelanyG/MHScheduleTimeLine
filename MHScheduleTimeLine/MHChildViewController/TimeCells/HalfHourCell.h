@@ -11,5 +11,8 @@
 @interface HalfHourCell : UICollectionViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *timeLable;
+@property (weak, nonatomic) IBOutlet UIView *tickStart;
+@property (weak, nonatomic) IBOutlet UIView *tickEnd;
+
 
 @end

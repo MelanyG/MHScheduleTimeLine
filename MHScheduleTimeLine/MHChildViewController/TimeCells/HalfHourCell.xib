@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -13,17 +17,18 @@
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                 <rect key="frame" x="0.0" y="0.0" width="150" height="23"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w2U-1j-Wrq">
                         <rect key="frame" x="0.0" y="2" width="1" height="14"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="0.5" id="eIm-we-tzx"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0de-lm-yAQ">
                         <rect key="frame" x="75" y="2" width="1" height="12"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="0.5" id="MgI-J1-f7E"/>
                         </constraints>
@@ -31,13 +36,12 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AQY-GZ-NFo">
                         <rect key="frame" x="6" y="2" width="64" height="16"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
-            <color key="backgroundColor" red="0.17254901960784313" green="0.35294117647058826" blue="0.69019607843137254" alpha="0.90509159482758617" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.17254901960784313" green="0.35294117647058826" blue="0.69019607843137254" alpha="0.90509159482758617" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="AQY-GZ-NFo" firstAttribute="leading" secondItem="w2U-1j-Wrq" secondAttribute="trailing" constant="5" id="0Ad-Q6-oCE"/>
                 <constraint firstItem="AQY-GZ-NFo" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="2" id="G1T-e7-9V1"/>
@@ -52,9 +56,11 @@
             </constraints>
             <size key="customSize" width="380" height="48"/>
             <connections>
+                <outlet property="tickEnd" destination="0de-lm-yAQ" id="fd5-iu-L27"/>
+                <outlet property="tickStart" destination="w2U-1j-Wrq" id="QmD-p0-rWr"/>
                 <outlet property="timeLable" destination="AQY-GZ-NFo" id="2jh-dw-aNr"/>
             </connections>
-            <point key="canvasLocation" x="212" y="246.5"/>
+            <point key="canvasLocation" x="-20" y="-41"/>
         </collectionViewCell>
     </objects>
 </document>
