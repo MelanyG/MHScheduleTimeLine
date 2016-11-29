@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "MHConfig.h"
 
+@class MHStyle;
 
 @interface MHChildViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
 
@@ -17,7 +18,7 @@
 @property(strong, nonatomic) NSIndexPath *currentProgrameIndex;
 @property (weak, nonatomic) IBOutlet UICollectionView *timeLineCollection;
 
-- (id)initWithArray:(NSArray *)array;
+- (id)initWithArray:(NSArray *)array andStyle:(MHStyle *)style;
 - (void)moveToCurrentTime;
-- (void)resetController:(NSMutableArray *)newData;
+- (void)resetControllerWithData:(NSMutableArray *)newData;
 @end

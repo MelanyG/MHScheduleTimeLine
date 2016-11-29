@@ -45,7 +45,7 @@ static MHConfig *singleton;
   
         self.inactiveProgramTextColor = [UIColor colorWithRed:64./255.0 green:64./255.0 blue:64./255.0 alpha:1.0];
         self.nowPlayingFont = [UIFont fontWithName:@"Helvetica" size:13.];
-        self.timelineBarBackgroundColor = [UIColor colorWithRed:60./255.0 green:60./255.0 blue:60./255.0 alpha:1.0];
+        self.timelineBarBackgroundColor = [UIColor colorWithRed:200./255.0 green:200./255.0 blue:200./255.0 alpha:1.0];
         self.timelineBarTextColor = [UIColor colorWithRed:200./255.0 green:200./255.0 blue:200./255.0 alpha:1.0];
     }
     return self;

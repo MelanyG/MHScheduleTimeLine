@@ -39,7 +39,7 @@ static NSString * const kHalfHourCollectionViewLayoutCellKind = @"HalfHourCell";
     
     self.cellCountHalfHours = hItems;
     self.cellCountPrograms = pItems;
-    self.halfHourItemSize = CGSizeMake(kHalfHourMinutes * kPixelsPerMinute, kCellHalfHourHeight);
+    self.halfHourItemSize = CGSizeMake(kHalfHourMinutes * kDPIPerMinute, kCellHalfHourHeight);
     self.programItemSize = CGSizeMake(200.f, kCellProgramHeight);
     self.xProgramFrames = [self xPositionsForProgramLables:schedule];
 }
@@ -72,6 +72,7 @@ static NSString * const kHalfHourCollectionViewLayoutCellKind = @"HalfHourCell";
         UICollectionViewLayoutAttributes *itemAttributes =
         [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
         itemAttributes.frame = [self frameForItemAtIndexPath:indexPath];
+        itemAttributes.zIndex = item;
         cellProgramLayoutInfo[indexPath] = itemAttributes;
     }
     
@@ -87,6 +88,9 @@ static NSString * const kHalfHourCollectionViewLayoutCellKind = @"HalfHourCell";
     
     if(indexPath.section == 1) {
         return self.layoutInfo[kHalfHourCollectionViewLayoutCellKind][newIndex];
+    }
+    if(newIndex.item > [self.layoutInfo[kProgramCollectionViewLayoutCellKind] count]) {
+        NSLog(@"error");
     }
     return self.layoutInfo[kProgramCollectionViewLayoutCellKind][newIndex];
 }
@@ -143,8 +147,8 @@ static NSString * const kHalfHourCollectionViewLayoutCellKind = @"HalfHourCell";
     for(int i = 0; i < array.count; i++) {
         Program *program = array[i];
         PositionModel *one = [PositionModel new];
-        one.width = [program.endTime timeIntervalSinceDate:program.startTime] / kMinutesInHour * kPixelsPerMinute;
-        one.xStartPosition = floorf([program.startTime timeIntervalSinceDate:self.startPoint] / kMinutesInHour * kPixelsPerMinute);
+        one.width = [program.endTime timeIntervalSinceDate:program.startTime] / kMinutesInHour * kDPIPerMinute;
+        one.xStartPosition = lround([program.startTime timeIntervalSinceDate:self.startPoint] / kMinutesInHour * kDPIPerMinute);
         [schedule addObject:one];
     }
     return schedule;

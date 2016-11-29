@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -12,7 +16,11 @@
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                 <rect key="frame" x="0.0" y="0.0" width="283" height="92"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AWM-Ta-Th0">
+                        <rect key="frame" x="0.0" y="0.0" width="283" height="92"/>
+                    </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Program" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KPA-cD-ay9">
                         <rect key="frame" x="10" y="5" width="263" height="82"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -20,17 +28,21 @@
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
-            <color key="backgroundColor" red="0.83137254901960789" green="0.83137254901960789" blue="0.83137254901960789" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.83137254901960789" green="0.83137254901960789" blue="0.83137254901960789" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="AWM-Ta-Th0" secondAttribute="bottom" id="ILo-wt-9OB"/>
+                <constraint firstAttribute="trailing" secondItem="AWM-Ta-Th0" secondAttribute="trailing" id="KYs-un-ZYg"/>
                 <constraint firstItem="KPA-cD-ay9" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="5" id="jKq-De-SxG"/>
                 <constraint firstAttribute="bottom" secondItem="KPA-cD-ay9" secondAttribute="bottom" constant="5" id="naj-jg-ANh"/>
                 <constraint firstAttribute="trailing" secondItem="KPA-cD-ay9" secondAttribute="trailing" constant="10" id="pEX-6P-9Wx"/>
+                <constraint firstItem="AWM-Ta-Th0" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="qVd-d8-XCM"/>
+                <constraint firstItem="AWM-Ta-Th0" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="rIH-YM-42P"/>
                 <constraint firstItem="KPA-cD-ay9" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="tlN-nn-Ztv"/>
             </constraints>
             <size key="customSize" width="283" height="92"/>
             <connections>
+                <outlet property="backgroundImage" destination="AWM-Ta-Th0" id="VbX-5f-Upr"/>
                 <outlet property="title" destination="KPA-cD-ay9" id="sLS-ey-d3I"/>
             </connections>
             <point key="canvasLocation" x="304.5" y="242"/>

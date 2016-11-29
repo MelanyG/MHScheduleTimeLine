@@ -9,9 +9,10 @@
 #import "MHParentController.h"
 #import "Program.h"
 #import "MHChildViewController.h"
+#import "MHMiddleViewController.h"
+#import "MHStyle.h"
 
-
-CGFloat const kPixelsPerMinute = 6.6f;
+CGFloat const kDPIPerMinute = 7.f; //?
 
 
 @interface MHParentController ()
@@ -20,32 +21,47 @@ CGFloat const kPixelsPerMinute = 6.6f;
 @property (weak, nonatomic) IBOutlet UIButton *secondVersionButton;
 @property (weak, nonatomic) IBOutlet UIView *parentContainer;
 @property (strong, nonatomic) MHChildViewController *timeLineController;
+@property (strong, nonatomic) MHMiddleViewController *middleContainer;
 @property (strong, nonatomic) NSMutableArray *secondCaseArray;
 @property (strong, nonatomic) NSMutableArray *firstCaseArray;
 
 @end
+
 
 @implementation MHParentController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.firstCaseArray = [self createArrayWithSchedules];
-    self.timeLineController = [[MHChildViewController alloc]initWithArray:self.firstCaseArray];
-     [self displayContentController:self.timeLineController];
-//    [self.timeLineController moveToCurrentTime];
-    // Do any additional setup after loading the view, typically from a nib.
+    MHStyle *style = [MHStyle new];
+    style.activeProgramFont = [[MHConfig sharedConfiguration]activeProgramFont];
+    style.activeProgramTextColor = [[MHConfig sharedConfiguration]activeProgramTextColor];
+    style.inactiveProgramFont = [[MHConfig sharedConfiguration]inactiveProgramFont];
+    style.inactiveProgramTextColor = [[MHConfig sharedConfiguration]inactiveProgramTextColor];
+    style.nowPlayingFont = [[MHConfig sharedConfiguration]nowPlayingFont];
+    style.timelineBarBackgroundColor = [[MHConfig sharedConfiguration]timelineBarBackgroundColor];
+    style.timelineBarTextColor = [[MHConfig sharedConfiguration]timelineBarTextColor];
+    style.activeImageName = @"schedule_active_background.png";
+    style.inActiveImageName = @"schedule_inactive_background_pad.png";
+    
+    
+    self.timeLineController = [[MHChildViewController alloc]initWithArray:self.firstCaseArray andStyle:style];
+    self.middleContainer = [[MHMiddleViewController alloc]init];
+     [self displayMiddleContentController:self.middleContainer];
+    
+    [self displayContentController:self.timeLineController];
 }
 
 - (IBAction)firstCaseArray:(id)sender {
     
-    [self.timeLineController resetController:self.firstCaseArray];
+    [self.timeLineController resetControllerWithData:self.firstCaseArray];
 }
 
 - (IBAction)secondCaseArray:(id)sender {
     if(!self.secondCaseArray) {
         self.secondCaseArray = [self createSecondCaseArrayWithSchedules];
     }
-    [self.timeLineController resetController:self.secondCaseArray];
+    [self.timeLineController resetControllerWithData:self.secondCaseArray];
  }
 
 - (void)didReceiveMemoryWarning {
@@ -54,16 +70,25 @@ CGFloat const kPixelsPerMinute = 6.6f;
 }
 
 - (void) displayContentController: (MHChildViewController *)content {
+    [self.middleContainer addChildViewController:content];
+    content.view.frame = CGRectMake(self.middleContainer.middleView.frame.origin.x, self.middleContainer.middleView.frame.origin.y, self.middleContainer.middleView.frame.size.width, self.middleContainer.middleView.frame.size.height);
+    [self.middleContainer.middleView addSubview:content.view];
+    content.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self createConstraints];
+    [content didMoveToParentViewController:self.middleContainer];
+}
+
+- (void) displayMiddleContentController: (MHMiddleViewController *)content {
     [self addChildViewController:content];
     content.view.frame = CGRectMake(self.parentContainer.frame.origin.x, self.parentContainer.frame.origin.y, self.parentContainer.frame.size.width, self.parentContainer.frame.size.height);
     [self.parentContainer addSubview:content.view];
     content.view.translatesAutoresizingMaskIntoConstraints = NO;
-    [self createConstraints];
+    [self createMiddleConstraints];
     [content didMoveToParentViewController:self];
 }
 
-- (void)createConstraints {
-    [self.parentContainer addConstraint:[NSLayoutConstraint constraintWithItem:self.timeLineController.view
+- (void)createMiddleConstraints {
+    [self.parentContainer addConstraint:[NSLayoutConstraint constraintWithItem:self.middleContainer.view
                                                                    attribute:NSLayoutAttributeTop
                                                                    relatedBy:NSLayoutRelationEqual
                                                                       toItem:self.parentContainer
@@ -71,7 +96,7 @@ CGFloat const kPixelsPerMinute = 6.6f;
                                                                   multiplier:1
                                                                     constant:0]];
     
-    [self.parentContainer addConstraint:[NSLayoutConstraint constraintWithItem:self.timeLineController.view
+    [self.parentContainer addConstraint:[NSLayoutConstraint constraintWithItem:self.middleContainer.view
                                                                    attribute:NSLayoutAttributeBottom
                                                                    relatedBy:NSLayoutRelationEqual
                                                                       toItem:self.parentContainer
@@ -79,7 +104,7 @@ CGFloat const kPixelsPerMinute = 6.6f;
                                                                   multiplier:1
                                                                     constant:0]];
     
-    [self.parentContainer addConstraint:[NSLayoutConstraint constraintWithItem:self.timeLineController.view
+    [self.parentContainer addConstraint:[NSLayoutConstraint constraintWithItem:self.middleContainer.view
                                                                    attribute:NSLayoutAttributeLeading
                                                                    relatedBy:NSLayoutRelationEqual
                                                                       toItem:self.parentContainer
@@ -87,7 +112,7 @@ CGFloat const kPixelsPerMinute = 6.6f;
                                                                   multiplier:1
                                                                     constant:0]];
     
-    [self.parentContainer addConstraint:[NSLayoutConstraint constraintWithItem:self.timeLineController.view
+    [self.parentContainer addConstraint:[NSLayoutConstraint constraintWithItem:self.middleContainer.view
                                                                    attribute:NSLayoutAttributeTrailing
                                                                    relatedBy:NSLayoutRelationEqual
                                                                       toItem:self.parentContainer
@@ -95,6 +120,41 @@ CGFloat const kPixelsPerMinute = 6.6f;
                                                                   multiplier:1
                                                                     constant:0]];
 }
+
+- (void)createConstraints {
+    [self.middleContainer.middleView addConstraint:[NSLayoutConstraint constraintWithItem:self.timeLineController.view
+                                                                     attribute:NSLayoutAttributeTop
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.middleContainer.middleView
+                                                                     attribute:NSLayoutAttributeTop
+                                                                    multiplier:1
+                                                                      constant:0]];
+    
+    [self.middleContainer.middleView addConstraint:[NSLayoutConstraint constraintWithItem:self.timeLineController.view
+                                                                     attribute:NSLayoutAttributeBottom
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.middleContainer.middleView
+                                                                     attribute:NSLayoutAttributeBottom
+                                                                    multiplier:1
+                                                                      constant:0]];
+    
+    [self.middleContainer.middleView addConstraint:[NSLayoutConstraint constraintWithItem:self.timeLineController.view
+                                                                     attribute:NSLayoutAttributeLeading
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.middleContainer.middleView
+                                                                     attribute:NSLayoutAttributeLeading
+                                                                    multiplier:1
+                                                                      constant:0]];
+    
+    [self.middleContainer.middleView addConstraint:[NSLayoutConstraint constraintWithItem:self.timeLineController.view
+                                                                     attribute:NSLayoutAttributeTrailing
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.middleContainer.middleView
+                                                                     attribute:NSLayoutAttributeTrailing
+                                                                    multiplier:1
+                                                                      constant:0]];
+}
+
 
 
 - (NSMutableArray *)createArrayWithSchedules {
@@ -106,7 +166,7 @@ CGFloat const kPixelsPerMinute = 6.6f;
     [startTime addObject:date];
     for(int j = 0; j < 48 * 2; j++) {
 
-      NSDate *newDate = [startTime[j] dateByAddingTimeInterval:(20 )*60];
+      NSDate *newDate = [startTime[j] dateByAddingTimeInterval:(20)*60];
         [startTime addObject:newDate];
         [endTimes addObject:newDate];
     }

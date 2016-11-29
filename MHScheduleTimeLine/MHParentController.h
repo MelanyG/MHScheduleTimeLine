@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-extern CGFloat const kPixelsPerMinute;
+extern CGFloat const kDPIPerMinute;
 
 @interface MHParentController : UIViewController
 

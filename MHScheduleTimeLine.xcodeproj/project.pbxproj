@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		390905751DE8852B007FFCCE /* MHMiddleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 390905731DE8852A007FFCCE /* MHMiddleViewController.m */; };
+		390905761DE8852B007FFCCE /* MHMiddleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 390905741DE8852A007FFCCE /* MHMiddleViewController.xib */; };
+		3909057F1DEDE561007FFCCE /* MHStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 3909057E1DEDE561007FFCCE /* MHStyle.m */; };
 		391864BF1DDC9F7A005F1CFF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 391864BE1DDC9F7A005F1CFF /* main.m */; };
 		391864C21DDC9F7F005F1CFF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 391864C11DDC9F7F005F1CFF /* AppDelegate.m */; };
 		391864C51DDC9F7F005F1CFF /* MHParentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 391864C41DDC9F7F005F1CFF /* MHParentController.m */; };
@@ -27,6 +30,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		390905721DE8852A007FFCCE /* MHMiddleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHMiddleViewController.h; sourceTree = "<group>"; };
+		390905731DE8852A007FFCCE /* MHMiddleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHMiddleViewController.m; sourceTree = "<group>"; };
+		390905741DE8852A007FFCCE /* MHMiddleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MHMiddleViewController.xib; sourceTree = "<group>"; };
+		3909057D1DEDE561007FFCCE /* MHStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHStyle.h; sourceTree = "<group>"; };
+		3909057E1DEDE561007FFCCE /* MHStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHStyle.m; sourceTree = "<group>"; };
 		391864BA1DDC9F7A005F1CFF /* MHScheduleTimeLine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MHScheduleTimeLine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		391864BE1DDC9F7A005F1CFF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		391864C01DDC9F7F005F1CFF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -69,6 +77,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3909057C1DEDE561007FFCCE /* Style */ = {
+			isa = PBXGroup;
+			children = (
+				3909057D1DEDE561007FFCCE /* MHStyle.h */,
+				3909057E1DEDE561007FFCCE /* MHStyle.m */,
+			);
+			path = Style;
+			sourceTree = "<group>";
+		};
 		391864B11DDC9F7A005F1CFF = {
 			isa = PBXGroup;
 			children = (
@@ -96,6 +113,9 @@
 				391864C11DDC9F7F005F1CFF /* AppDelegate.m */,
 				391864C31DDC9F7F005F1CFF /* MHParentController.h */,
 				391864C41DDC9F7F005F1CFF /* MHParentController.m */,
+				390905721DE8852A007FFCCE /* MHMiddleViewController.h */,
+				390905731DE8852A007FFCCE /* MHMiddleViewController.m */,
+				390905741DE8852A007FFCCE /* MHMiddleViewController.xib */,
 				391864C61DDC9F7F005F1CFF /* Main.storyboard */,
 				39F333541DE3364D0027EF77 /* ExperimentVC.h */,
 				39F333551DE3364D0027EF77 /* ExperimentVC.m */,
@@ -118,6 +138,7 @@
 		391864D91DDCA67F005F1CFF /* MHChildViewController */ = {
 			isa = PBXGroup;
 			children = (
+				3909057C1DEDE561007FFCCE /* Style */,
 				39F333571DE349310027EF77 /* CustomLayOut */,
 				39F3335A1DE349310027EF77 /* PositionModel */,
 				39F3335D1DE349310027EF77 /* TimeCells */,
@@ -227,6 +248,7 @@
 			files = (
 				391864CD1DDC9F7F005F1CFF /* LaunchScreen.storyboard in Resources */,
 				391864CA1DDC9F7F005F1CFF /* Assets.xcassets in Resources */,
+				390905761DE8852B007FFCCE /* MHMiddleViewController.xib in Resources */,
 				39F333691DE349310027EF77 /* ProgramCell.xib in Resources */,
 				391864C81DDC9F7F005F1CFF /* Main.storyboard in Resources */,
 				39F333671DE349310027EF77 /* HalfHourCell.xib in Resources */,
@@ -248,9 +270,11 @@
 				391864DD1DDCA67F005F1CFF /* MHChildViewController.m in Sources */,
 				391864C51DDC9F7F005F1CFF /* MHParentController.m in Sources */,
 				391864C21DDC9F7F005F1CFF /* AppDelegate.m in Sources */,
+				3909057F1DEDE561007FFCCE /* MHStyle.m in Sources */,
 				391864BF1DDC9F7A005F1CFF /* main.m in Sources */,
 				39F3336C1DE46BD60027EF77 /* MHConfig.m in Sources */,
 				39F333681DE349310027EF77 /* ProgramCell.m in Sources */,
+				390905751DE8852B007FFCCE /* MHMiddleViewController.m in Sources */,
 				39F333661DE349310027EF77 /* HalfHourCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

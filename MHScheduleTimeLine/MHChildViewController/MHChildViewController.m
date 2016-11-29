@@ -12,16 +12,21 @@
 #import "Program.h"
 #import "CustomTimeLayOut.h"
 #import "MHParentController.h"
+#import "MHStyle.h"
 
 
 @interface MHChildViewController (){
     NSCalendar *_gregorianCalendar;
+    BOOL _reset;
 }
 
 @property (weak, nonatomic) IBOutlet CustomTimeLayOut *customLayOut;
 @property (strong, nonatomic) NSArray *timeLablesArray;
 @property (strong, nonatomic) NSTimer *autoScrollingTimer;
 @property (nonatomic) CGPoint tickPoint;
+@property (nonatomic, assign) NSInteger coloredCell;
+@property (nonatomic, strong) CAShapeLayer *shapeLayer;
+@property (nonatomic, strong) MHStyle *style;
 
 @end
 
@@ -38,7 +43,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (id)initWithArray:(NSArray *)array {
+- (id)initWithArray:(NSArray *)array andStyle:(MHStyle *)style {
     self = [super init];
     if (self != nil) {
         self.dataSource = (NSMutableArray *)array;
@@ -47,8 +52,8 @@
         [self.timeLineCollection registerNib:[UINib nibWithNibName:@"ProgramCell" bundle:nil] forCellWithReuseIdentifier:@"ProgramCell"];
         [self.timeLineCollection registerNib:[UINib nibWithNibName:@"HalfHourCell" bundle:nil] forCellWithReuseIdentifier:@"HalfHourCell"];
         [self.customLayOut setUpWithHalfHourItems:self.timeLablesArray.count andProgramItems:self.dataSource.count andArrayOfSchedules:array];
-
-        self.timeLineCollection.backgroundColor = [UIColor grayColor];
+        self.style = style;
+        self.timeLineCollection.backgroundColor = [UIColor whiteColor];
     }
     return self;
 }
@@ -69,11 +74,13 @@
 
 #pragma mark - Reset of Controller
 
-- (void)resetController:(NSMutableArray *)newData {
+- (void)resetControllerWithData:(NSMutableArray *)newData {
+    _reset = YES;
     self.dataSource = newData;
     [self.customLayOut setUpWithHalfHourItems:self.timeLablesArray.count andProgramItems:self.dataSource.count andArrayOfSchedules:newData];
     [self.customLayOut invalidateLayout];
-    [self moveToCurrentTime];
+    [self.timeLineCollection reloadData];
+    [self performSelector:@selector(moveToCurrentTime) withObject:nil afterDelay:0.1];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -98,8 +105,8 @@
     if(indexPath.section == 1) {
         HalfHourCell *hourCell = [collectionView dequeueReusableCellWithReuseIdentifier:HalfHourCellIdentifier forIndexPath:indexPath];
         hourCell.timeLable.text = self.timeLablesArray[indexPath.item];
-        [hourCell.timeLable setTextColor:[MHConfig sharedConfiguration].timelineBarTextColor];
-        hourCell.backgroundColor = [MHConfig sharedConfiguration].timelineBarBackgroundColor;
+        [hourCell.timeLable setTextColor:self.style.timelineBarTextColor];
+        hourCell.backgroundColor = self.style.timelineBarBackgroundColor;
         cell = hourCell;
 
     } else {
@@ -107,16 +114,15 @@
         ProgramCell *programCell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
         programCell.title.text = program.title;
         if(self.activeIndex.item == indexPath.item) {
-            [programCell.title setFont:[MHConfig sharedConfiguration].activeProgramFont];
-            [programCell.title setTextColor:[MHConfig sharedConfiguration].activeProgramTextColor];
-            programCell.backgroundColor = [UIColor lightGrayColor];
+            [programCell.title setFont:self.style.activeProgramFont];
+            [programCell.title setTextColor:self.style.activeProgramTextColor];
+            programCell.backgroundImage.image = [UIImage imageNamed:self.style.activeImageName];
         } else {
-            [programCell.title setFont:[MHConfig sharedConfiguration].inactiveProgramFont];
-            [programCell.title setTextColor:[MHConfig sharedConfiguration].inactiveProgramTextColor];
-            programCell.backgroundColor = [UIColor grayColor];
+            [programCell.title setFont:self.style.inactiveProgramFont];
+            [programCell.title setTextColor:self.style.inactiveProgramTextColor];
+            programCell.backgroundImage.image = [UIImage imageNamed:self.style.inActiveImageName];
         }
         cell = programCell;
-        [self.timeLineCollection sendSubviewToBack:cell];
     }
     return cell;
 }
@@ -168,7 +174,7 @@
 - (void)moveToCurrentTime {
 
     NSDate *currentDate = [NSDate new];
-    NSInteger difference = [currentDate timeIntervalSinceDate:self.customLayOut.startPoint] / 60 * kPixelsPerMinute - [UIScreen mainScreen].bounds.size.width / 2;
+    NSInteger difference = [currentDate timeIntervalSinceDate:self.customLayOut.startPoint] / 60 * kDPIPerMinute - [UIScreen mainScreen].bounds.size.width / 2;
     
     CGPoint destinationPoint = CGPointMake(difference, 0.f);
     [self.timeLineCollection setContentOffset:destinationPoint animated:YES];
@@ -196,24 +202,21 @@
 #pragma mark - Drawing Spliter
 
 - (void)addActiveLine:(CGPoint)point {
-    for (CALayer *layer in self.timeLineCollection.layer.sublayers) {
-        if([layer.name isEqualToString:@"ActiveLine"]) {
-            [layer removeFromSuperlayer];
-            break;
-        }
-    }
     UIBezierPath *path = [UIBezierPath bezierPath];
     point.x += [UIScreen mainScreen].bounds.size.width / 2;
     [path moveToPoint:point];
     [path addLineToPoint:CGPointMake(point.x, 25)];
-    
-    CAShapeLayer *shapeLayer = [CAShapeLayer layer];
-    shapeLayer.path = [path CGPath];
-    shapeLayer.strokeColor = [[MHConfig sharedConfiguration].timelineBarTextColor CGColor];
-    shapeLayer.lineWidth = 2.0;
-    shapeLayer.fillColor = [[UIColor clearColor] CGColor];
-    shapeLayer.name = @"ActiveLine";
-    [self.timeLineCollection.layer addSublayer:shapeLayer];
+    if(!self.shapeLayer) {
+        self.shapeLayer = [CAShapeLayer layer];
+        self.shapeLayer.path = [path CGPath];
+        self.shapeLayer.strokeColor = [self.style.timelineBarTextColor CGColor];
+        self.shapeLayer.lineWidth = 2.0;
+        self.shapeLayer.fillColor = [[UIColor clearColor] CGColor];
+        self.shapeLayer.name = @"ActiveLine";
+        [self.timeLineCollection.layer addSublayer:self.shapeLayer];
+    } else {
+        self.shapeLayer.path = [path CGPath];
+    }
     self.tickPoint = point;
 }
 
@@ -229,6 +232,11 @@
     if(cellNext.origin.x <= activeXPosition.x) {
         self.activeIndex = nextIndexPath;
     }
+    if(_reset) {
+        self.coloredCell = 0;
+        _reset = NO;
+    }
+    [self setActiveCellByIndex:self.activeIndex];
 }
 
 #pragma mark - ScrollViewDelegate methods
@@ -244,13 +252,28 @@
 #pragma mark - CustomTimeLayOutDelegate method
 
 -(void)layoutSubviewsWithAttributes:(NSMutableArray *)theAttributes{
-    CGPoint startOfScreen = CGPointMake(self.timeLineCollection.bounds.origin.x-5, 25.f);
+    CGPoint startOfScreen = CGPointMake(self.timeLineCollection.bounds.origin.x, 25.f);
     for(UICollectionViewLayoutAttributes *attribute in theAttributes) {
     if(CGRectContainsPoint(attribute.frame, startOfScreen)) {
-        ProgramCell *cell = (ProgramCell*)[self.timeLineCollection cellForItemAtIndexPath:attribute.indexPath];
-        [self.timeLineCollection sendSubviewToBack:cell];
-        attribute.frame = CGRectMake(startOfScreen.x, startOfScreen.y, attribute.frame.size.width, attribute.frame.size.height);
+            attribute.frame = CGRectMake(startOfScreen.x, startOfScreen.y, attribute.frame.size.width, attribute.frame.size.height);
         }
+    }
+}
+
+-(void)setActiveCellByIndex:(NSIndexPath *)path {
+    if(self.coloredCell != path.item) {
+        NSInteger oldIndex = path.item - 1;
+        if(self.coloredCell == oldIndex) {
+            ProgramCell *inActiveCell = (ProgramCell *)[self.timeLineCollection cellForItemAtIndexPath: [NSIndexPath indexPathForItem:self.coloredCell inSection:0]];
+            [inActiveCell.title setFont:self.style.inactiveProgramFont];
+            [inActiveCell.title setTextColor:self.style.inactiveProgramTextColor];
+            inActiveCell.backgroundImage.image = [UIImage imageNamed:self.style.inActiveImageName];
+        }
+        ProgramCell *activeCell = (ProgramCell *)[self.timeLineCollection cellForItemAtIndexPath:self.activeIndex];
+        activeCell.backgroundImage.image = [UIImage imageNamed:self.style.activeImageName];
+        [activeCell.title setFont:self.style.activeProgramFont];
+        [activeCell.title setTextColor:self.style.activeProgramTextColor];
+        self.coloredCell = path.item;
     }
 }
 
