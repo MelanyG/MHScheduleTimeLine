@@ -162,7 +162,11 @@
         NSInteger currHour = (hour) * 60 + minutes;
         NSInteger newHour = ((hour * 60 + minutes) / 60);
         NSInteger tmpHour = newHour;
-        newHour = newHour > 12 ? newHour % 12 : newHour;
+        if(newHour % 24 == 12) {
+            newHour = 12;
+        } else {
+            newHour = newHour > 12 ? newHour % 12 : newHour;
+        }
         NSString *hourString = [NSString stringWithFormat:(currHour%60 < 30) ? @"%ld:00%c":@"%ld:30%c", (long)newHour, (tmpHour %24 < 12)?'A':'P'];
         minutes +=30;
         [tmpArray addObject:hourString];
