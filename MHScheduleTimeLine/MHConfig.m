@@ -39,13 +39,13 @@ static MHConfig *singleton;
     self = [super init];
     if (self) {
         self.activeProgramFont = [UIFont fontWithName:@"Helvetica" size:18.f];
-
-        self.activeProgramTextColor = [UIColor colorWithRed:0/255.0 green:96./255.0 blue:169./255.0 alpha:1.0];
+        self.activeProgramTextColor = [UIColor colorWithRed:64./255.0 green:64./255.0 blue:64./255.0 alpha:1.0];
+        
         self.inactiveProgramFont = [UIFont fontWithName:@"Helvetica" size:14.];
-  
-        self.inactiveProgramTextColor = [UIColor colorWithRed:64./255.0 green:64./255.0 blue:64./255.0 alpha:1.0];
+        self.inactiveProgramTextColor = [UIColor colorWithRed:128./255.0 green:128./255.0 blue:128./255.0 alpha:1.0];
+        
         self.nowPlayingFont = [UIFont fontWithName:@"Helvetica" size:13.];
-        self.timelineBarBackgroundColor = [UIColor colorWithRed:200./255.0 green:200./255.0 blue:200./255.0 alpha:1.0];
+        self.timelineBarBackgroundColor = [UIColor colorWithRed:0./255.0 green:51./255.0 blue:98./255.0 alpha:1.0];
         self.timelineBarTextColor = [UIColor whiteColor];
     }
     return self;

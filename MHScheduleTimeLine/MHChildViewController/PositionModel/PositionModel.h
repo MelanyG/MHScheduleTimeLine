@@ -11,8 +11,7 @@
 
 @interface PositionModel : NSObject
 
-@property(nonatomic)NSInteger xPosition;
 @property(nonatomic) NSInteger width;
 @property(nonatomic) CGFloat xStartPosition;
-@property(nonatomic) NSInteger xEndPosition;
+
 @end
